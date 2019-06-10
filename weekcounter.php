@@ -23,11 +23,11 @@ class WeekCounter {
 		$interval = date_diff($dateFrom, $dateTo);
 		$numberOfWeek = ceil($interval->format('%a')/7);
 
-		if($numberOfWeek == 0) { // if in date_diff exactly the first Thursday in the first week is given the result $numberOfWeek will return 0, we return in return 1
-			return 1;
-		} else {
-			return ceil($interval->format('%a')/7);
+		if($dateTo->format('N') == 4) {
+			$numberOfWeek++;
 		}
+
+		return $numberOfWeek;
 	}
 
 	/**
