@@ -31,45 +31,24 @@ class WeekCounter {
 	}
 
 	/**
-	* The method checks the given date - its day number (1 - Monday, 7 - Sunday), returns the INT value that is missing until Thursday
-	*/
-	private function findThursday(DateTime $date) {
-		switch($date->format('N')) {
-			case 1: return 3; break;
-			case 2: return 2; break;
-			case 3: return 1; break;
-			case 4: return 0; break;
-			case 5: return 6; break;
-			case 6: return 5; break;
-			case 7: return 4; break;
-		}
-	}
-
-	/**
 	* The method which is to find the first Thursday in March from 01.03
 	*/
 	private function findStartDate($year, $month, $day) {
-		if($month < "03") {
+		if($month < self::STARTMONTH) {
 			$year--;
 		}
-		if($month == "03" && $day < 7) {
-			if(!$this->isBetweenThursday($year, $month, $day)) {
+		if($month == self::STARTMONTH && $day < 7) {
+			if(!$this->isThursdayBetween($year, $month, $day)) {
 				$year--;
 			}
 		}
-			$month = "03";
-			$day = "01";
-
-		$date = date_create($year."-".$month."-".$day);
-		$date->add(new DateInterval('P'.$this->findThursday($date).'D'));
-
-		return $date;
+		return date_create(date('Y-m-d', strtotime('first Thursday of March '.$year)));
 	}
 
 	/**
 	* Method called when the date received is shorter than 7 days from 01/03 - we check if it is Thursday at that time
 	*/
-	private function isBetweenThursday($year, $month, $day) {
+	private function isThursdayBetween($year, $month, $day) {
 		$dateFrom = date_create($year."-".self::STARTMONTH."-".self::STARTDAY);
 		$dateTo = date_create($year."-".$month."-".$day);
 		$interval = date_diff($dateTo, $dateFrom);
